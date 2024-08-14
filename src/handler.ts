@@ -1,24 +1,25 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { database } from './db';
+import { executeQuery } from './db';
+import util from 'util';
 
 export type RouteHandler = (req: IncomingMessage, res: ServerResponse, params?: { [key: string]: string }) => void;
 
-export const getAllUsersHandler : RouteHandler = (req, res) => {
+export const getAllUsersHandler : RouteHandler = async (req, res) => {
     const query = 'SELECT * FROM ??';
 }
 
-export const getUserByIdHandler : RouteHandler = (req, res, params) => {
+export const getUserByIdHandler : RouteHandler = async (req, res, params) => {
     const query = 'SELECT * FROM ?? WHERE ?? = ??';
 }
 
-export const createUserHandler : RouteHandler = (req, res, params) => {
-    const query = 'INSERT INTO ?? VALUES (??, ??, ??)';
+export const createUserHandler : RouteHandler = async (req, res, params) => {
+    const query = 'INSERT INTO ?? (??, ??, ??) VALUES (??, ??, ??)';
 }
 
-export const editUserHandler : RouteHandler = (req, res, params) => {
+export const editUserHandler : RouteHandler = async (req, res, params) => {
     const query = 'UPDATE ?? SET ?? = ??, ?? = ??, ?? = ?? WHERE ?? = ??';
 }
 
-export const deleteUserHandler : RouteHandler = (req, res, params) => {
+export const deleteUserHandler : RouteHandler = async (req, res, params) => {
     const query = 'DELETE FROM ?? WHERE ?? = ??';
 }
