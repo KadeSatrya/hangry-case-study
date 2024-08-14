@@ -3,46 +3,46 @@ import { getAllUsersHandler, getUserByIdHandler, createUserHandler, editUserHand
 
 const routeList: { pattern: RegExp, method: String, handler: RouteHandler }[] = [
     {
-        pattern: /^\/$/, // For /
+        pattern: /^\/$/, // For /, only for testing purposes
         method: "GET",
         handler: (req: IncomingMessage, res: ServerResponse) => {
             res.end("API Running");
         }
     },
     {
-        pattern: /^\/users\/$/, // For /users/
+        pattern: /^\/api\/v0\/users\/$/, // For /users/
         method: "GET",
         handler: getAllUsersHandler
     },
     {
-        pattern: /^\/users\/(\d+)$/, // For /users/{id}
+        pattern: /^\/api\/v0\/users\/(\d+)$/, // For /users/{id}
         method: "GET",
         handler: getUserByIdHandler
     },
     {
-        pattern: /^\/users\/create$/, // For /users/create
+        pattern: /^\/api\/v0\/users\/create$/, // For /users/create
         method: "POST",
         handler: createUserHandler
     },
     {
-        pattern: /^\/users\/$/, // For /users/edit/{id}
+        pattern: /^\/api\/v0\/users\/$/, // For /users/edit/{id}
         method: "PUT",
         handler: editUserHandler
     },
     {
-        pattern: /^\/users\/$/, // For /users/edit/{id}
+        pattern: /^\/api\/v0\/users\/$/, // For /users/edit/{id}
         method: "PATCH",
         handler: editUserHandler
     },
     {
-        pattern: /^\/users\/$/, // For /users/delete/{id}
+        pattern: /^\/api\/v0\/users\/$/, // For /users/delete/{id}
         method: "DELETE",
         handler: deleteUserHandler
     },
 ];
 
 export const routeRequest = (req: IncomingMessage, res: ServerResponse) => {
-    const url = req.url || "";
+    const url : String = req.url || "";
     
     for (const route of routeList){
         const match = url.match(route.pattern);
