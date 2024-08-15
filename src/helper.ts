@@ -1,5 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { parse, isValid } from 'date-fns';
+import { executeQuery } from './db';
+const validator = require('validator');
 
 
 export const getPayload = async (req: IncomingMessage): Promise<any> => {
@@ -25,22 +27,27 @@ export const getPayload = async (req: IncomingMessage): Promise<any> => {
     });
 }
 
-export const validateUserData = (name: string, email: string, birthdate: string) => {
-    if (!name || !email || !birthdate){
+export const validateUserData = async (name: string, email: string, birthdate: string) => {
+    if (name === undefined || email === undefined || birthdate === undefined){
         return {status: false, message: "Name, Email, and Date of Birth must not be empty"}
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(email)){
-        return {status: false, message: "Invalid email"}
+    if (!validator.isEmail(email)){
+        return {status: false, message: "Invalid email"};
+    }
+
+    const emailQuery = 'SELECT * FROM users WHERE email = ?';
+    const sameEmail = await executeQuery(emailQuery, [email]);
+    if (sameEmail[0]){
+        return {status: false, message: "Email already taken"};
     }
 
     const parsedDate = parse(birthdate, "dd-mm-yyyy", new Date());
     if (!isValid(parsedDate)){
-        return {status: false, message: "Invalid date"}
+        return {status: false, message: "Invalid date"};
     }
 
-    return {status: true, message: "Valid data"}
+    return {status: true, message: "Valid data"};
 }
 
 export const serverErrorMessage = (res: ServerResponse, message: string, code: number) => {

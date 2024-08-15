@@ -10,7 +10,7 @@ const routeList: { pattern: RegExp, method: String, handler: RouteHandler }[] = 
         }
     },
     {
-        pattern: /^\/api\/v0\/users\/$/, // For /users/
+        pattern: /^\/api\/v0\/users$/, // For /users
         method: "GET",
         handler: getAllUsersHandler
     },
@@ -25,17 +25,17 @@ const routeList: { pattern: RegExp, method: String, handler: RouteHandler }[] = 
         handler: createUserHandler
     },
     {
-        pattern: /^\/api\/v0\/users\/$/, // For /users/edit/{id}
+        pattern: /^\/api\/v0\/users\/(\d+)$/, // For /users/{id}
         method: "PUT",
         handler: editUserHandler
     },
     {
-        pattern: /^\/api\/v0\/users\/$/, // For /users/edit/{id}
+        pattern: /^\/api\/v0\/users\/(\d+)$/, // For /users/{id}
         method: "PATCH",
         handler: editUserHandler
     },
     {
-        pattern: /^\/api\/v0\/users\/$/, // For /users/delete/{id}
+        pattern: /^\/api\/v0\/users\/(\d+)$/, // For /users/{id}
         method: "DELETE",
         handler: deleteUserHandler
     },
