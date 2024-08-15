@@ -47,12 +47,16 @@ export const routeRequest = (req: IncomingMessage, res: ServerResponse) => {
     for (const route of routeList){
         const match = url.match(route.pattern);
         if (match && req.method === route.method){
-            const params = {id: match[1]};
-            route.handler(req, res, params);
+            const id = match[1];
+            route.handler(req, res, id);
             return;
         }
     }
 
-    res.statusCode = 404;
-    res.end();
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    const body = {
+        status: false,
+        message: "Not Found",
+    };
+    res.end(JSON.stringify(body));
 }

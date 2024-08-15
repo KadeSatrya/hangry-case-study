@@ -1,6 +1,8 @@
-require('dotenv').config()
+import { config } from 'dotenv';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { routeRequest } from './routes';
+config();
+
 const port = process.env.PORT;
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {

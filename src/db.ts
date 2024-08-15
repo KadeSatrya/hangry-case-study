@@ -9,6 +9,7 @@ const pool = mysql.createPool({
 });
 
 export const executeQuery = async (query: string, params?: any[]) => {
-    const [rows] = await pool.execute(query, params);
+    const connection = await pool.getConnection();
+    const [rows] = await connection.execute<mysql.RowDataPacket[]>(query, params);
     return rows;
 };
