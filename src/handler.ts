@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { executeQuery } from './db';
 import { getPayload, validateUserData, serverErrorMessage } from './helper';
+import { v4 as uuidv4 } from 'uuid';
 
 export type RouteHandler = (req: IncomingMessage, res: ServerResponse, id?: string) => void;
 
@@ -43,9 +44,10 @@ export const createUserHandler : RouteHandler = async (req, res) => {
         serverErrorMessage(res, validation.message, 400);
         return;
     }
-
-    const query = 'INSERT INTO users (name, email, birthdate) VALUES (?, ?, ?)';
-    await executeQuery(query, [name, email, birthdate]);
+    
+    const id = uuidv4();
+    const query = 'INSERT INTO users (id, name, email, birthdate) VALUES (?, ?, ?, ?)';
+    await executeQuery(query, [id, name, email, birthdate]);
 
     const resultQuery = 'SELECT * FROM users WHERE email = ?';
     const result = await executeQuery(resultQuery, [email]);
